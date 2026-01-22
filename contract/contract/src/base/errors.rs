@@ -9,4 +9,10 @@ pub enum CrowdfundingError {
     InvalidGoal = 3,
     InvalidDeadline = 4,
     CampaignAlreadyExists = 5,
+    PoolNotFound = 6,
+    InvalidPoolName = 7,
+    InvalidPoolTarget = 8,
+    InvalidPoolDeadline = 9,
+    PoolAlreadyExists = 10,
+    InvalidPoolState = 11,
 }

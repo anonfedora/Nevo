@@ -1,6 +1,9 @@
 use soroban_sdk::{Address, BytesN, Env, String};
 
-use crate::base::{errors::CrowdfundingError, types::CampaignDetails};
+use crate::base::{
+    errors::CrowdfundingError,
+    types::{CampaignDetails, PoolConfig, PoolState},
+};
 
 pub trait CrowdfundingTrait {
     fn create_campaign(
@@ -13,4 +16,21 @@ pub trait CrowdfundingTrait {
     ) -> Result<(), CrowdfundingError>;
 
     fn get_campaign(env: Env, id: BytesN<32>) -> Result<CampaignDetails, CrowdfundingError>;
+
+    fn save_pool(
+        env: Env,
+        name: String,
+        description: String,
+        creator: Address,
+        target_amount: i128,
+        deadline: u64,
+    ) -> Result<u64, CrowdfundingError>;
+
+    fn get_pool(env: Env, pool_id: u64) -> Option<PoolConfig>;
+
+    fn update_pool_state(
+        env: Env,
+        pool_id: u64,
+        new_state: PoolState,
+    ) -> Result<(), CrowdfundingError>;
 }

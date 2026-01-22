@@ -9,3 +9,42 @@ pub struct CampaignDetails {
     pub goal: i128,
     pub deadline: u64,
 }
+
+#[contracttype]
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct PoolConfig {
+    pub id: u64,
+    pub name: String,
+    pub description: String,
+    pub creator: Address,
+    pub target_amount: i128,
+    pub deadline: u64,
+    pub created_at: u64,
+}
+
+#[contracttype]
+#[derive(Clone, Debug, Eq, PartialEq)]
+#[repr(u32)]
+pub enum PoolState {
+    Active = 0,
+    Paused = 1,
+    Completed = 2,
+    Cancelled = 3,
+}
+
+#[contracttype]
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct PoolMetrics {
+    pub total_donations: i128,
+    pub donor_count: u32,
+    pub last_donation_at: u64,
+}
+
+#[contracttype]
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub enum StorageKey {
+    Pool(u64),
+    PoolState(u64),
+    PoolMetrics(u64),
+    NextPoolId,
+}
