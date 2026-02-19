@@ -25,7 +25,6 @@
       ]
     ],
     [],
-    [],
     [
       [
         "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAITA4",
@@ -33,26 +32,50 @@
           "function": {
             "contract_fn": {
               "contract_address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHK3M",
-              "function_name": "create_campaign",
+              "function_name": "save_pool",
               "args": [
                 {
-                  "bytes": "cf00000000000000000000000000000000000000000000000000000000000000"
+                  "string": "Grace Period Test"
                 },
                 {
-                  "string": "Fully Funded Test"
+                  "map": [
+                    {
+                      "key": {
+                        "symbol": "description"
+                      },
+                      "val": {
+                        "string": "Test"
+                      }
+                    },
+                    {
+                      "key": {
+                        "symbol": "external_url"
+                      },
+                      "val": {
+                        "string": ""
+                      }
+                    },
+                    {
+                      "key": {
+                        "symbol": "image_hash"
+                      },
+                      "val": {
+                        "string": ""
+                      }
+                    }
+                  ]
                 },
                 {
                   "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAITA4"
                 },
                 {
-                  "i128": "1000"
+                  "i128": "10000"
                 },
                 {
-                  "u64": "86400"
+                  "u64": "87400"
                 },
-                {
-                  "address": "CBEPDNVYXQGWB5YUBXKJWYJA7OXTZW5LFLNO5JRRGE6Z6C5OSUZPCCEL"
-                }
+                "void",
+                "void"
               ]
             }
           },
@@ -89,10 +112,10 @@
           "function": {
             "contract_fn": {
               "contract_address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHK3M",
-              "function_name": "donate",
+              "function_name": "contribute",
               "args": [
                 {
-                  "bytes": "cf00000000000000000000000000000000000000000000000000000000000000"
+                  "u64": "1"
                 },
                 {
                   "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK3IM"
@@ -102,6 +125,9 @@
                 },
                 {
                   "i128": "1000"
+                },
+                {
+                  "bool": false
                 }
               ]
             }
@@ -131,14 +157,12 @@
         }
       ]
     ],
-    [],
-    [],
     []
   ],
   "ledger": {
     "protocol_version": 23,
     "sequence_number": 0,
-    "timestamp": 0,
+    "timestamp": 692199,
     "network_id": "0000000000000000000000000000000000000000000000000000000000000000",
     "base_reserve": 0,
     "min_persistent_entry_ttl": 4096,
@@ -243,6 +267,76 @@
         {
           "contract_data": {
             "contract": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHK3M",
+            "key": {
+              "vec": [
+                {
+                  "symbol": "PoolMetadata"
+                },
+                {
+                  "u64": "1"
+                }
+              ]
+            },
+            "durability": "persistent"
+          }
+        },
+        [
+          {
+            "last_modified_ledger_seq": 0,
+            "data": {
+              "contract_data": {
+                "ext": "v0",
+                "contract": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHK3M",
+                "key": {
+                  "vec": [
+                    {
+                      "symbol": "PoolMetadata"
+                    },
+                    {
+                      "u64": "1"
+                    }
+                  ]
+                },
+                "durability": "persistent",
+                "val": {
+                  "map": [
+                    {
+                      "key": {
+                        "symbol": "description"
+                      },
+                      "val": {
+                        "string": "Test"
+                      }
+                    },
+                    {
+                      "key": {
+                        "symbol": "external_url"
+                      },
+                      "val": {
+                        "string": ""
+                      }
+                    },
+                    {
+                      "key": {
+                        "symbol": "image_hash"
+                      },
+                      "val": {
+                        "string": ""
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            "ext": "v0"
+          },
+          4095
+        ]
+      ],
+      [
+        {
+          "contract_data": {
+            "contract": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHK3M",
             "key": "ledger_key_contract_instance",
             "durability": "persistent"
           }
@@ -266,7 +360,22 @@
                         "key": {
                           "vec": [
                             {
-                              "bytes": "cf00000000000000000000000000000000000000000000000000000000000000"
+                              "symbol": "NextPoolId"
+                            }
+                          ]
+                        },
+                        "val": {
+                          "u64": "2"
+                        }
+                      },
+                      {
+                        "key": {
+                          "vec": [
+                            {
+                              "symbol": "Pool"
+                            },
+                            {
+                              "u64": "1"
                             }
                           ]
                         },
@@ -274,15 +383,23 @@
                           "map": [
                             {
                               "key": {
-                                "symbol": "creator"
+                                "symbol": "created_at"
                               },
                               "val": {
-                                "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAITA4"
+                                "u64": "1000"
                               }
                             },
                             {
                               "key": {
-                                "symbol": "deadline"
+                                "symbol": "description"
+                              },
+                              "val": {
+                                "string": "Test"
+                              }
+                            },
+                            {
+                              "key": {
+                                "symbol": "duration"
                               },
                               "val": {
                                 "u64": "86400"
@@ -290,42 +407,26 @@
                             },
                             {
                               "key": {
-                                "symbol": "goal"
+                                "symbol": "is_private"
                               },
                               "val": {
-                                "i128": "1000"
+                                "bool": false
                               }
                             },
                             {
                               "key": {
-                                "symbol": "id"
+                                "symbol": "name"
                               },
                               "val": {
-                                "bytes": "cf00000000000000000000000000000000000000000000000000000000000000"
+                                "string": "Grace Period Test"
                               }
                             },
                             {
                               "key": {
-                                "symbol": "title"
+                                "symbol": "target_amount"
                               },
                               "val": {
-                                "string": "Fully Funded Test"
-                              }
-                            },
-                            {
-                              "key": {
-                                "symbol": "token_address"
-                              },
-                              "val": {
-                                "address": "CBEPDNVYXQGWB5YUBXKJWYJA7OXTZW5LFLNO5JRRGE6Z6C5OSUZPCCEL"
-                              }
-                            },
-                            {
-                              "key": {
-                                "symbol": "total_raised"
-                              },
-                              "val": {
-                                "i128": "1000"
+                                "i128": "10000"
                               }
                             }
                           ]
@@ -335,96 +436,10 @@
                         "key": {
                           "vec": [
                             {
-                              "symbol": "Admin"
-                            }
-                          ]
-                        },
-                        "val": {
-                          "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD2KM"
-                        }
-                      },
-                      {
-                        "key": {
-                          "vec": [
-                            {
-                              "symbol": "AllCampaigns"
-                            }
-                          ]
-                        },
-                        "val": {
-                          "vec": [
-                            {
-                              "bytes": "cf00000000000000000000000000000000000000000000000000000000000000"
-                            }
-                          ]
-                        }
-                      },
-                      {
-                        "key": {
-                          "vec": [
-                            {
-                              "symbol": "CampaignDonor"
+                              "symbol": "PoolContribution"
                             },
                             {
-                              "bytes": "cf00000000000000000000000000000000000000000000000000000000000000"
-                            },
-                            {
-                              "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK3IM"
-                            }
-                          ]
-                        },
-                        "val": {
-                          "bool": true
-                        }
-                      },
-                      {
-                        "key": {
-                          "vec": [
-                            {
-                              "symbol": "CampaignMetrics"
-                            },
-                            {
-                              "bytes": "cf00000000000000000000000000000000000000000000000000000000000000"
-                            }
-                          ]
-                        },
-                        "val": {
-                          "map": [
-                            {
-                              "key": {
-                                "symbol": "contributor_count"
-                              },
-                              "val": {
-                                "u32": 1
-                              }
-                            },
-                            {
-                              "key": {
-                                "symbol": "last_donation_at"
-                              },
-                              "val": {
-                                "u64": "0"
-                              }
-                            },
-                            {
-                              "key": {
-                                "symbol": "total_raised"
-                              },
-                              "val": {
-                                "i128": "1000"
-                              }
-                            }
-                          ]
-                        }
-                      },
-                      {
-                        "key": {
-                          "vec": [
-                            {
-                              "symbol": "Contribution"
-                            },
-                            {
-                              "bytes": "cf00000000000000000000000000000000000000000000000000000000000000"
+                              "u64": "1"
                             },
                             {
                               "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK3IM"
@@ -443,10 +458,10 @@
                             },
                             {
                               "key": {
-                                "symbol": "campaign_id"
+                                "symbol": "asset"
                               },
                               "val": {
-                                "bytes": "cf00000000000000000000000000000000000000000000000000000000000000"
+                                "address": "CBEPDNVYXQGWB5YUBXKJWYJA7OXTZW5LFLNO5JRRGE6Z6C5OSUZPCCEL"
                               }
                             },
                             {
@@ -456,6 +471,14 @@
                               "val": {
                                 "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK3IM"
                               }
+                            },
+                            {
+                              "key": {
+                                "symbol": "pool_id"
+                              },
+                              "val": {
+                                "u64": "1"
+                              }
                             }
                           ]
                         }
@@ -464,48 +487,55 @@
                         "key": {
                           "vec": [
                             {
-                              "symbol": "CreationFee"
+                              "symbol": "PoolMetrics"
+                            },
+                            {
+                              "u64": "1"
                             }
                           ]
                         },
                         "val": {
-                          "i128": "0"
+                          "map": [
+                            {
+                              "key": {
+                                "symbol": "contributor_count"
+                              },
+                              "val": {
+                                "u32": 1
+                              }
+                            },
+                            {
+                              "key": {
+                                "symbol": "last_donation_at"
+                              },
+                              "val": {
+                                "u64": "1000"
+                              }
+                            },
+                            {
+                              "key": {
+                                "symbol": "total_raised"
+                              },
+                              "val": {
+                                "i128": "1000"
+                              }
+                            }
+                          ]
                         }
                       },
                       {
                         "key": {
                           "vec": [
                             {
-                              "symbol": "CrowdfundingToken"
-                            }
-                          ]
-                        },
-                        "val": {
-                          "address": "CBEPDNVYXQGWB5YUBXKJWYJA7OXTZW5LFLNO5JRRGE6Z6C5OSUZPCCEL"
-                        }
-                      },
-                      {
-                        "key": {
-                          "vec": [
+                              "symbol": "PoolState"
+                            },
                             {
-                              "symbol": "GlobalTotalRaised"
+                              "u64": "1"
                             }
                           ]
                         },
                         "val": {
-                          "i128": "1000"
-                        }
-                      },
-                      {
-                        "key": {
-                          "vec": [
-                            {
-                              "symbol": "IsPaused"
-                            }
-                          ]
-                        },
-                        "val": {
-                          "bool": false
+                          "u32": 0
                         }
                       }
                     ]

@@ -188,6 +188,7 @@ pub enum StorageKey {
     EmergencyWithdrawal,
     CrowdfundingToken,
     CreationFee,
+    GlobalTotalRaised,
 }
 
 #[cfg(test)]

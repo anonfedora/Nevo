@@ -587,6 +587,18 @@
                         "key": {
                           "vec": [
                             {
+                              "symbol": "GlobalTotalRaised"
+                            }
+                          ]
+                        },
+                        "val": {
+                          "i128": "7000"
+                        }
+                      },
+                      {
+                        "key": {
+                          "vec": [
+                            {
                               "symbol": "IsPaused"
                             }
                           ]

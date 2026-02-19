@@ -152,6 +152,13 @@ impl CrowdfundingTrait for CrowdfundingContract {
             .unwrap_or(0))
     }
 
+    fn get_global_raised_total(env: Env) -> i128 {
+        env.storage()
+            .instance()
+            .get(&StorageKey::GlobalTotalRaised)
+            .unwrap_or(0)
+    }
+
     fn get_all_campaigns(env: Env) -> Vec<BytesN<32>> {
         env.storage()
             .instance()
@@ -290,6 +297,17 @@ impl CrowdfundingTrait for CrowdfundingContract {
         }
 
         env.storage().instance().set(&metrics_key, &metrics);
+
+        // Update global total raised
+        let global_key = StorageKey::GlobalTotalRaised;
+        let global_total: i128 = env
+            .storage()
+            .instance()
+            .get(&global_key)
+            .unwrap_or(0);
+        env.storage()
+            .instance()
+            .set(&global_key, &(global_total + amount));
 
         // Store individual contribution
         let contribution_key = StorageKey::Contribution(campaign_id.clone(), donor.clone());

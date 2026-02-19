@@ -1263,6 +1263,64 @@ fn test_donation_updates_total_raised() {
 }
 
 #[test]
+fn test_global_raised_total_increases_across_campaigns() {
+    let env = Env::default();
+    env.mock_all_auths();
+
+    // Setup token
+    let admin = Address::generate(&env);
+    let token_id = env
+        .register_stellar_asset_contract_v2(admin.clone())
+        .address();
+    let token_admin_client = soroban_sdk::token::StellarAssetClient::new(&env, &token_id);
+
+    let contract_id = env.register(CrowdfundingContract, ());
+    let client = CrowdfundingContractClient::new(&env, &contract_id);
+
+    // Initialize contract
+    client.initialize(&admin, &token_id, &0);
+
+    // Create first campaign
+    let creator = Address::generate(&env);
+    let campaign_id_1 = create_test_campaign_id(&env, 203);
+    let title1 = String::from_str(&env, "Campaign One");
+    let goal = 10_000i128;
+    let deadline = env.ledger().timestamp() + 86400;
+
+    client.create_campaign(&campaign_id_1, &title1, &creator, &goal, &deadline, &token_id);
+
+    // Create second campaign
+    let creator2 = Address::generate(&env);
+    let campaign_id_2 = create_test_campaign_id(&env, 204);
+    let title2 = String::from_str(&env, "Campaign Two");
+
+    client.create_campaign(&campaign_id_2, &title2, &creator2, &goal, &deadline, &token_id);
+
+    // Initial global total should be 0
+    assert_eq!(client.get_global_raised_total(), 0);
+
+    // Donor for campaign 1
+    let donor1 = Address::generate(&env);
+    token_admin_client.mint(&donor1, &10_000i128);
+
+    // First donation to campaign 1
+    client.donate(&campaign_id_1, &donor1, &token_id, &5_000i128);
+    assert_eq!(client.get_global_raised_total(), 5_000i128);
+
+    // Donor for campaign 2
+    let donor2 = Address::generate(&env);
+    token_admin_client.mint(&donor2, &10_000i128);
+
+    // Donation to campaign 2
+    client.donate(&campaign_id_2, &donor2, &token_id, &3_000i128);
+    assert_eq!(client.get_global_raised_total(), 8_000i128);
+
+    // Additional donation to campaign 1
+    client.donate(&campaign_id_1, &donor1, &token_id, &2_000i128);
+    assert_eq!(client.get_global_raised_total(), 10_000i128);
+}
+
+#[test]
 fn test_contribution_tracked_per_user() {
     let env = Env::default();
     env.mock_all_auths();
