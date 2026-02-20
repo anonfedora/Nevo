@@ -2754,3 +2754,99 @@ fn test_withdraw_platform_fees_insufficient_fees() {
     let res = client.try_withdraw_platform_fees(&admin, &100);
     assert_eq!(res, Err(Ok(CrowdfundingError::InsufficientFees)));
 }
+
+#[test]
+fn test_get_top_contributor_for_campaign() {
+    let env = Env::default();
+    let (client, _, token_address) = setup_test(&env);
+
+    let token_admin_client = soroban_sdk::token::StellarAssetClient::new(&env, &token_address);
+
+    let creator = Address::generate(&env);
+    let campaign_id = create_test_campaign_id(&env, 201);
+    client.create_campaign(
+        &campaign_id,
+        &String::from_str(&env, "Whale Donor Test"),
+        &creator,
+        &10000i128,
+        &(env.ledger().timestamp() + 1000),
+        &token_address,
+    );
+
+    // Setup multiple donors with different donation amounts
+    let donor1 = Address::generate(&env);
+    token_admin_client.mint(&donor1, &5000i128);
+
+    let donor2 = Address::generate(&env);
+    token_admin_client.mint(&donor2, &5000i128);
+
+    let donor3 = Address::generate(&env);
+    token_admin_client.mint(&donor3, &5000i128);
+
+    // First donation: donor1 gives 100 XLM
+    client.donate(&campaign_id, &donor1, &token_address, &100i128);
+    assert_eq!(client.get_top_contributor_for_campaign(&campaign_id), donor1);
+
+    // Second donation: donor2 gives 500 XLM (new top contributor)
+    client.donate(&campaign_id, &donor2, &token_address, &500i128);
+    assert_eq!(client.get_top_contributor_for_campaign(&campaign_id), donor2);
+
+    // Third donation: donor3 gives 250 XLM (donor2 still top)
+    client.donate(&campaign_id, &donor3, &token_address, &250i128);
+    assert_eq!(client.get_top_contributor_for_campaign(&campaign_id), donor2);
+
+    // Fourth donation: donor1 gives 400 more (single donation is 400, less than current max 500)
+    // donor2 remains top since 400 < 500
+    client.donate(&campaign_id, &donor1, &token_address, &400i128);
+    assert_eq!(client.get_top_contributor_for_campaign(&campaign_id), donor2);
+
+    // Fifth donation: donor1 gives 600 (single donation exceeds current max)
+    // donor1 becomes new top
+    let donor1_new = Address::generate(&env);
+    token_admin_client.mint(&donor1_new, &10000i128);
+    client.donate(&campaign_id, &donor1_new, &token_address, &600i128);
+    assert_eq!(client.get_top_contributor_for_campaign(&campaign_id), donor1_new);
+}
+
+#[test]
+fn test_get_top_contributor_for_nonexistent_campaign() {
+    let env = Env::default();
+    let (client, _, _) = setup_test(&env);
+
+    let campaign_id = create_test_campaign_id(&env, 202);
+    let result = client.try_get_top_contributor_for_campaign(&campaign_id);
+    assert_eq!(result, Err(Ok(CrowdfundingError::CampaignNotFound)));
+}
+
+#[test]
+fn test_get_top_contributor_single_donor() {
+    let env = Env::default();
+    let (client, _, token_address) = setup_test(&env);
+
+    let token_admin_client = soroban_sdk::token::StellarAssetClient::new(&env, &token_address);
+
+    let creator = Address::generate(&env);
+    let campaign_id = create_test_campaign_id(&env, 203);
+    client.create_campaign(
+        &campaign_id,
+        &String::from_str(&env, "Single Donor Test"),
+        &creator,
+        &10000i128,
+        &(env.ledger().timestamp() + 1000),
+        &token_address,
+    );
+
+    // Setup single donor
+    let donor = Address::generate(&env);
+    token_admin_client.mint(&donor, &10000i128);
+
+    // Multiple donations from same donor
+    client.donate(&campaign_id, &donor, &token_address, &100i128);
+    assert_eq!(client.get_top_contributor_for_campaign(&campaign_id), donor);
+
+    client.donate(&campaign_id, &donor, &token_address, &200i128);
+    assert_eq!(client.get_top_contributor_for_campaign(&campaign_id), donor);
+
+    client.donate(&campaign_id, &donor, &token_address, &50i128);
+    assert_eq!(client.get_top_contributor_for_campaign(&campaign_id), donor);
+}

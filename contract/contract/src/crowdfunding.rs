@@ -171,6 +171,25 @@ impl CrowdfundingTrait for CrowdfundingContract {
             .unwrap_or(0)
     }
 
+    fn get_top_contributor_for_campaign(
+        env: Env,
+        campaign_id: BytesN<32>,
+    ) -> Result<Address, CrowdfundingError> {
+        // Validate campaign exists
+        Self::get_campaign(env.clone(), campaign_id.clone())?;
+
+        let metrics_key = StorageKey::CampaignMetrics(campaign_id);
+        let metrics: CampaignMetrics = env
+            .storage()
+            .instance()
+            .get(&metrics_key)
+            .unwrap_or_default();
+
+        metrics
+            .top_contributor
+            .ok_or(CrowdfundingError::CampaignNotFound)
+    }
+
     fn get_all_campaigns(env: Env) -> Vec<BytesN<32>> {
         env.storage()
             .instance()
@@ -300,6 +319,12 @@ impl CrowdfundingTrait for CrowdfundingContract {
 
         metrics.total_raised += amount;
         metrics.last_donation_at = env.ledger().timestamp();
+
+        // Track top contributor (whale donor)
+        if amount > metrics.max_donation {
+            metrics.max_donation = amount;
+            metrics.top_contributor = Some(donor.clone());
+        }
 
         // Track unique donor
         let donor_key = StorageKey::CampaignDonor(campaign_id.clone(), donor.clone());

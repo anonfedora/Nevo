@@ -82,6 +82,11 @@ pub trait CrowdfundingTrait {
 
     fn get_global_raised_total(env: Env) -> i128;
 
+    fn get_top_contributor_for_campaign(
+        env: Env,
+        campaign_id: BytesN<32>,
+    ) -> Result<Address, CrowdfundingError>;
+
     fn initialize(
         env: Env,
         admin: Address,

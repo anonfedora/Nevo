@@ -93,6 +93,8 @@ pub struct CampaignMetrics {
     pub total_raised: i128,
     pub contributor_count: u32,
     pub last_donation_at: u64,
+    pub max_donation: i128,
+    pub top_contributor: Option<Address>,
 }
 
 impl Default for CampaignMetrics {
@@ -107,6 +109,8 @@ impl CampaignMetrics {
             total_raised: 0,
             contributor_count: 0,
             last_donation_at: 0,
+            max_donation: 0,
+            top_contributor: None,
         }
     }
 }
