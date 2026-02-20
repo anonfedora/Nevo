@@ -189,6 +189,7 @@ pub enum StorageKey {
     CrowdfundingToken,
     CreationFee,
     GlobalTotalRaised,
+    VerifiedCause(Address),
 }
 
 #[cfg(test)]
