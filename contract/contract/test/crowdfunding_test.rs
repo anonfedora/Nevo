@@ -2782,22 +2782,6 @@ fn test_get_active_campaign_count_all_expired() {
     assert_eq!(client.get_active_campaign_count(), 0);
 }
 
-#[test]
-fn test_get_active_campaign_count_exactly_at_deadline() {
-    let env = Env::default();
-    let (client, _, token_address) = setup_test(&env);
-
-    env.ledger().with_mut(|li| li.timestamp = 1000);
-
-    let creator = Address::generate(&env);
-    let id = create_test_campaign_id(&env, 80);
-    let deadline = 2000u64;
-
-    client.create_campaign(
-        &id,
-        &String::from_str(&env, "Edge Deadline"),
-        &creator,
-        &1000i128,
 fn test_withdraw_platform_fees_success() {
     let env = Env::default();
     let (client, admin, token_address) = setup_test(&env);
