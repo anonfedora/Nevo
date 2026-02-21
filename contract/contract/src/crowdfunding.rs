@@ -727,6 +727,19 @@ impl CrowdfundingTrait for CrowdfundingContract {
         Ok(())
     }
 
+    fn renounce_admin(env: Env) -> Result<(), CrowdfundingError> {
+        let admin: Address = env
+            .storage()
+            .instance()
+            .get(&StorageKey::Admin)
+            .ok_or(CrowdfundingError::NotInitialized)?;
+        admin.require_auth();
+
+        env.storage().instance().remove(&StorageKey::Admin);
+        events::admin_renounced(&env, admin);
+        Ok(())
+    }
+
     fn is_paused(env: Env) -> bool {
         env.storage()
             .instance()
@@ -906,7 +919,7 @@ impl CrowdfundingTrait for CrowdfundingContract {
             .storage()
             .instance()
             .get(&metrics_key)
-            .unwrap_or(PoolMetrics::new());
+            .unwrap_or_default();
 
         metrics.total_raised -= contribution.amount;
         // Note: We don't decrement contributor_count as the contributor may have other contributions

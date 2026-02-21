@@ -128,6 +128,8 @@ pub trait CrowdfundingTrait {
 
     fn is_closed(env: Env, pool_id: u64) -> Result<bool, CrowdfundingError>;
 
+    fn renounce_admin(env: Env) -> Result<(), CrowdfundingError>;
+
     fn get_active_campaign_count(env: Env) -> u32;
     fn verify_cause(env: Env, cause: Address) -> Result<(), CrowdfundingError>;
 
